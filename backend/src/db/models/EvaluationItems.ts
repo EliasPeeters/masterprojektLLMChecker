@@ -1,5 +1,6 @@
 import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../db';
+import {EvaluationAnswer} from "./EvaluationAnswer";
 
 export class EvaluationItem extends Model {
     declare id: string;
@@ -35,3 +36,16 @@ EvaluationItem.init(
         timestamps: false,
     }
 );
+
+// create Association with EvaluationAnswer
+EvaluationItem.hasMany(EvaluationAnswer, {
+    foreignKey: 'itemId',
+    sourceKey: 'id',
+    as: 'answers',
+});
+
+EvaluationAnswer.belongsTo(EvaluationItem, {
+    foreignKey: 'itemId',
+    targetKey: 'id',
+    as: 'item',
+});

@@ -81,4 +81,39 @@ router.post('/answer', async (req: Request, res: Response) => {
     }
 });
 
+// route to export all results as csv
+// 📍 GET /api/evaluation/export
+// @ts-ignore
+router.get('/export', async (req: Request, res: Response) => {
+    try {
+        const answers = await EvaluationAnswer.findAll({
+            include: [{
+                model: EvaluationItem,
+                as: 'item'
+            }],
+        });
+
+        if (!answers.length) {
+            return res.status(404).json({ error: 'No evaluation answers found' });
+        }
+
+        const csvRows = [
+            'id,itemId,answer,timestamp,itemType,itemText,itemLlmResult',
+            ...answers.map(answer => {
+                const item = answer.get('item') as EvaluationItem;
+                return `${answer.id},${answer.itemId},${answer.answer},${answer.timestamp},${item.type},${item.text},${item.llmResult}`;
+            }),
+        ];
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment('evaluation_results.csv');
+        res.send(csvRows.join('\n'));
+    } catch (err) {
+        res.status(500).json({
+            error: 'Failed to export results',
+            details: err instanceof Error ? err.message : String(err),
+        });
+    }
+});
+
 export default router;
