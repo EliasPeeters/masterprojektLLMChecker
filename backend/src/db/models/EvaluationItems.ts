@@ -6,6 +6,7 @@ export class EvaluationItem extends Model {
     declare id: string;
     declare type: string;
     declare text: string;
+    declare category: string;
     declare llmResult: string;
 }
 
@@ -27,7 +28,12 @@ EvaluationItem.init(
             type: DataTypes.TEXT,
             allowNull: false,
             field: 'llmresult',
-        }
+        },
+        category: {
+            type: DataTypes.STRING(50),
+            allowNull: true,
+            defaultValue: 'default',
+        },
     },
     {
         sequelize,

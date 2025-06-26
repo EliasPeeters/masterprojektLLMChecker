@@ -39,6 +39,7 @@ router.post('/item', async (req: Request, res: Response) => {
             type,
             text,
             llmResult,
+            category: req.body.category || 'EXPENSE'
         });
 
         res.status(201).json(newItem);
@@ -101,7 +102,7 @@ router.get('/export', async (req: Request, res: Response) => {
             'id,itemId,answer,timestamp,itemType,itemText,itemLlmResult',
             ...answers.map(answer => {
                 const item = answer.get('item') as EvaluationItem;
-                return `${answer.id},${answer.itemId},${answer.answer},${answer.timestamp},${item.type},${item.text},${item.llmResult}`;
+                return `${answer.id},${answer.itemId},${answer.answer},${answer.timestamp},${item.type},${item.text},${item.llmResult},${item.category}`;
             }),
         ];
 
