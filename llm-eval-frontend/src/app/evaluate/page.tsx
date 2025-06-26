@@ -38,14 +38,12 @@ export default function EvaluatePage() {
     const submitAnswer = async (answer: string) => {
         if (!item) return;
 
-        await fetch('/api/evaluation/answer', {
+        await fetch('https://masterbackend.eliaspeeters.de/api/evaluation/answer', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 itemId: item.id,
-                question: 'preissensibel',
                 answer,
-                user: 'testuser',
             }),
         });
 

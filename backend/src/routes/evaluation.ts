@@ -116,4 +116,21 @@ router.get('/export', async (req: Request, res: Response) => {
     }
 });
 
+// clear all evaluation items and answers
+// 📍 DELETE /api/evaluation/clear
+// @ts-ignore
+router.delete('/clear', async (req: Request, res: Response) => {
+    try {
+        await EvaluationItem.destroy({ where: {} });
+        await EvaluationAnswer.destroy({ where: {} });
+
+        res.status(200).json({ success: true });
+    } catch (err) {
+        res.status(500).json({
+            error: 'Failed to clear evaluation data',
+            details: err instanceof Error ? err.message : String(err),
+        });
+    }
+});
+
 export default router;
