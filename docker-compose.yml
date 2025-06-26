@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: llm-eval-backend
+    ports:
+      - "3300:3300"
+    environment:
+      - PG_HOST=db
+      - PG_PORT=5432
+      - PG_USER=postgres
+      - PG_PASSWORD=postgres
+      - PG_DATABASE=llm_eval
+      - DB_URL=postgres://postgres:postgres@db:5432/llm_eval
+    depends_on:
+      - flyway
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    command: sh -c "yarn build && node dist/src/index.js"
+  db:
+    image: postgres:16
+    container_name: llm-eval-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: llm_eval
+      SEQUELIZE_DB_URL: postgres://postgres:postgres@db:5432/llm_eval
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway:9
+    depends_on:
+      - db
+    volumes:
+      - ./sql/migrations:/flyway/sql
+      - ./sql/conf:/flyway/conf
+    command: -url=jdbc:postgresql://db:5432/llm_eval -user=postgres -password=postgres migrate
+
+volumes:
+  pgdata:

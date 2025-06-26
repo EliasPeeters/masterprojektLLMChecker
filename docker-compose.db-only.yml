@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    container_name: llm-eval-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: llm_eval
+      SEQUELIZE_DB_URL: postgres://postgres:postgres@db:5432/llm_eval
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  flyway:
+    image: flyway/flyway:9
+    depends_on:
+      - db
+    volumes:
+      - ./sql/migrations:/flyway/sql
+    command: -url=jdbc:postgresql://db:5432/llm_eval -user=postgres -password=postgres migrate
+
+volumes:
+  pgdata:
