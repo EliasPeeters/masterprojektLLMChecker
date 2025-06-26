@@ -18,7 +18,7 @@ export default function EvaluatePage() {
     const fetchNext = async () => {
         setLoading(true);
         try {
-            const res = await fetch('/api/evaluation/next');
+            const res = await fetch('https://masterbackend.eliaspeeters.de/api/evaluation/next');
 
             if (!res.ok) {
                 throw new Error(`API-Fehler: ${res.status}`);
@@ -29,6 +29,7 @@ export default function EvaluatePage() {
             setItem(data);
         } catch (error) {
             console.error('Fehler beim Laden:', error);
+            alert('Fehler: ' + (error instanceof Error ? error.message : 'Unbekannt'));
             setItem(null);
         }
         setLoading(false);
