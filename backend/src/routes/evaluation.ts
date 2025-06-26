@@ -23,6 +23,33 @@ router.get('/next', async (req: Request, res: Response) => {
     }
 });
 
+// route to create a new evaluation item
+// 📍 POST /api/evaluation/item
+// @ts-ignore
+router.post('/item', async (req: Request, res: Response) => {
+    const { type, text, llmResult, id } = req.body;
+
+    if (!type || !text || !llmResult || !id) {
+        return res.status(400).json({ error: 'Missing required fields' });
+    }
+
+    try {
+        const newItem = await EvaluationItem.create({
+            id,
+            type,
+            text,
+            llmResult,
+        });
+
+        res.status(201).json(newItem);
+    } catch (err) {
+        res.status(500).json({
+            error: 'Failed to create evaluation item',
+            details: err instanceof Error ? err.message : String(err),
+        });
+    }
+});
+
 // 📍 POST /api/evaluation/answer
 // @ts-ignore
 router.post('/answer', async (req: Request, res: Response) => {
