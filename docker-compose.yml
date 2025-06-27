@@ -21,7 +21,7 @@ services:
       - PG_HOST=db
       - PG_PORT=5432
       - PG_USER=postgres
-      - PG_PASSWORD=postgres
+      - PG_PASSWORD=LGenwnCHhLuvMMmftoqBVz
       - PG_DATABASE=llm_eval
       - DB_URL=postgres://postgres:postgres@db:5432/llm_eval
     depends_on:
@@ -36,7 +36,7 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: LGenwnCHhLuvMMmftoqBVz
       POSTGRES_DB: llm_eval
       SEQUELIZE_DB_URL: postgres://postgres:postgres@db:5432/llm_eval
     ports:
@@ -51,7 +51,7 @@ services:
     volumes:
       - ./sql/migrations:/flyway/sql
       - ./sql/conf:/flyway/conf
-    command: -url=jdbc:postgresql://db:5432/llm_eval -user=postgres -password=postgres migrate
+    command: -url=jdbc:postgresql://db:5432/llm_eval -user=postgres -password=LGenwnCHhLuvMMmftoqBVz migrate
 
 volumes:
   pgdata:
