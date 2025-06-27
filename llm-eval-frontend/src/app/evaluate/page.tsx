@@ -45,16 +45,16 @@ export default function EvaluatePage() {
     };
 
     const submitAnswer = async (answer: string) => {
-        const convertAnswer = (answer: string): number => {
+        const convertAnswer = (answer: string): string => {
             if (item?.type === 'priceSensitivity' || item?.type === 'ecoConsciousness') {
-                if (answer === 'Ja') return 0; // Preisbewusst oder Umweltbewusst
-                if (answer === 'Neutral') return 1; // Neutral
-                if (answer === 'Nein') return 2; // Nicht preisbewusst oder nicht umweltbewusst
-                return -1; // Unbekannt
+                if (answer === 'Ja') return "0"; // Preisbewusst oder Umweltbewusst
+                if (answer === 'Neutral') return "1"; // Neutral
+                if (answer === 'Nein') return "2"; // Nicht preisbewusst oder nicht umweltbewusst
+                return "-1"; // Unbekannt
             } else {
-                if (answer === 'Ja') return 1; // Ja
-                if (answer === 'Nein') return 0; // Nein
-                return -1; // Unbekannt
+                if (answer === 'Ja') return "1"; // Ja
+                if (answer === 'Nein') return "0"; // Nein
+                return "-1"; // Unbekannt
             }
         }
 
