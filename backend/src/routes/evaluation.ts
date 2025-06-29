@@ -3,6 +3,7 @@ import { randomUUID } from 'crypto';
 import {EvaluationItem} from "../db/models/EvaluationItems";
 import {sequelize} from "../db/db";
 import {EvaluationAnswer} from "../db/models/EvaluationAnswer";
+import {Op} from "sequelize";
 
 const router = Router();
 
@@ -10,7 +11,14 @@ const router = Router();
 // @ts-ignore
 router.get('/next', async (req: Request, res: Response) => {
     try {
-        const item = await EvaluationItem.findOne({ order: [sequelize.fn('RANDOM')] });
+        const item = await EvaluationItem.findOne({
+            where: {
+                type: {
+                    [Op.or]: ['priceSensitivity', 'ecoConsciousness']
+                }
+            },
+            order: [sequelize.fn('RANDOM')]
+        });
         if (!item) {
             return res.status(404).json({ error: 'No evaluation items found' });
         }
