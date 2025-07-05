@@ -123,7 +123,6 @@ export default function EvaluatePage() {
             <p style={{ fontSize: 24 }}>{item.text}</p>
 
             <div style={{ marginTop: 24 }}>
-                <p>{item.llmResult}</p>
                 {getOptions(item.type).map((opt) => (
                     <button
                         key={opt}
